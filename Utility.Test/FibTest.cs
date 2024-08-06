@@ -4,8 +4,15 @@ public class FibTest
 {
 
     [Test]
-    public void Test1()
+    public void WorksForAnArbitraryValue()
     {
-        Utility.Fibonacci.Recrusive(5);
+        // given 
+        int n = 6;
+        
+        // when
+        int result = Fibonacci.Recrusive(n);
+        
+        // then 
+        Assert.That(result, Is.EqualTo(8));
     }
 }
