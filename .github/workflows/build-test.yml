@@ -44,6 +44,7 @@ on:
   pull_request:
     branches: [ "master" ]
 
+permissions: write-all
 jobs:
 
   build:
@@ -74,7 +75,40 @@ jobs:
     # Add  MSBuild to the PATH: https://github.com/microsoft/setup-msbuild
     - name: Setup MSBuild.exe
       uses: microsoft/setup-msbuild@v2
-
+   
+    - name: Restore dependecies
+      run: dotnet restore
+      
+    - name: Build Solution
+      run: dotnet build --no-restore
+    
     # Execute all unit tests in the solution
     - name: Execute unit tests
       run: dotnet test
+
+    - name: Publish
+      run: dotnet publish -c Release -o ./publish
+
+    - name: Create release archive
+      run: zip -r build.zip ./publish
+
+    - name: Create Github release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+          tag_name: ${{ github.run_number }}
+          release_name: Release ${{ github.run_number }}
+          draft: false
+          prerelease: false
+
+    - name: Upload build artifact
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./build.zip
+        asset_name: build-$(date + '%Y-%m-%d').zip
+        asset_content_type: application/zip
