@@ -79,13 +79,13 @@ jobs:
     - name: Restore dependecies
       run: dotnet restore
       
-    - name: Build Solution
-      run: dotnet build --no-restore
-    
     # Execute all unit tests in the solution
     - name: Execute unit tests
       run: dotnet test
-
+      
+    - name: Build Solution
+      run: dotnet build --no-restore
+    
     - name: Publish
       run: dotnet publish -c Release -o ./publish
 
