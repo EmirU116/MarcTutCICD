@@ -44,7 +44,7 @@ on:
   pull_request:
     branches: [ "master" ]
 
-permissions: write-all
+permissions: write
 jobs:
 
   build:
@@ -81,7 +81,7 @@ jobs:
       
     # Execute all unit tests in the solution
     - name: Execute unit tests
-      run: dotnet test
+      run: dotnet test --no-restore --verbosity normal
       
     - name: Build Solution
       run: dotnet build --no-restore
