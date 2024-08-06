@@ -87,7 +87,7 @@ jobs:
       run: dotnet build --no-restore
     
     - name: Publish
-      run: dotnet publish -c Release -o ./publish
+      run: dotnet publish MarcTutCICD.sln -c Release -o ./publish
 
     - name: Create release archive
       run: zip -r build.zip ./publish
