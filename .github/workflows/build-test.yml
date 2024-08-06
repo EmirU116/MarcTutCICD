@@ -72,7 +72,7 @@ jobs:
       with:
         dotnet-version: 8.0.x
    
-    - name: Restore dependecies
+    - name: Restore dependencies
       run: dotnet restore
       
     - name: Build Solution
@@ -84,7 +84,7 @@ jobs:
       
     
     - name: Publish
-      run: dotnet publish MarcTutCICD.sln -c Release -o ./publish
+      run: dotnet publish -c Release -o ./publish
 
     - name: Create release archive
       run: zip -r build.zip ./publish
@@ -107,5 +107,5 @@ jobs:
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
         asset_path: ./build.zip
-        asset_name: build-$(date + '%Y-%m-%d').zip
+        asset_name: build-${{ github.run_number }}.zip
         asset_content_type: application/zip
